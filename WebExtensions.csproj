@@ -1,12 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <PackAsTool>False</PackAsTool>
     <!-- NuGet包元数据 -->
     <PackageId>WebExtensions</PackageId>
-    <Version>1.0.0.2</Version>
+    <Version>1.0.0.3</Version>
     <Title>WebExtensions</Title>
     <Authors>Wod</Authors>
     <Company>Wod</Company>
@@ -21,10 +20,17 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ReleaseNotes>初始版本发布，包含HTTP请求处理、Cookie管理和JSON解析功能。</ReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- NuGet包自述文件配置 -->
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+  
+  <!-- 将README.md包含在NuGet包中 -->
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
