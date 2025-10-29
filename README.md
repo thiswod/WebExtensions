@@ -1,13 +1,13 @@
 # WebExtensions
 
-WebExtensions 是一个轻量级的 .NET 工具库，提供 HTTP 请求处理、Cookie 管理和 JSON 解析等核心功能，专为 .NET 应用程序的网络扩展需求设计。
+WebExtensions 是一个轻量级的 .NET 工具库，提供 HTTP 请求处理、Cookie 管理、JSON 解析和实用工具功能，专为 .NET 应用程序的网络扩展和开发需求设计。
 
 ## 主要功能
 
 ### 1. HTTP 请求处理
 - 支持 GET、POST 等多种 HTTP 方法
 - 文件上传功能
-- 自定义请求头管理
+- 自定义请求头管理（包括临时请求头）
 - 代理设置支持
 - SSL 证书验证选项
 - Cookie 管理集成
@@ -17,12 +17,22 @@ WebExtensions 是一个轻量级的 .NET 工具库，提供 HTTP 请求处理、
 - 从 CoreWebView2CookieManager 导入/导出 Cookie
 - 批量 Cookie 操作
 - Cookie 字符串解析和处理
+- Cookie 存在性检查
 
 ### 3. JSON 处理
 - JSON 字符串验证
 - 动态对象解析
 - JSON 序列化和反序列化
 - 数组和对象解析
+
+### 4. 实用工具功能
+- URL 参数排序（按 ASCII 码顺序）
+- 查询字符串转换为字典
+- 字典转换为查询字符串
+- URL 全路径参数排序
+- 随机码生成
+- 时间戳获取
+- URL 参数解析（支持多个等号的情况）
 
 ## 技术特点
 
@@ -58,11 +68,28 @@ var cookieManager = new CookieManager();
 // 设置单个 Cookie
 cookieManager.SetCookie("sessionId", "abc123");
 
-// 批量设置 Cookie
+// 批量设置 Cookie（通过字典）
+var cookiesDict = new Dictionary<string, string>
+{
+    {"user", "admin"},
+    {"token", "xyz789"}
+};
+cookieManager.SetCookie(cookiesDict);
+
+// 通过字符串批量设置 Cookie
 cookieManager.SetCookie("user=admin; token=xyz789; loggedIn=true");
 
 // 从 WebView2 导入 Cookie（异步）
 await cookieManager.ImportFromWebView2Async(webViewCookieManager);
+
+// 导出 Cookie 到 WebView2（异步）
+await cookieManager.ExportToWebView2Async(webViewCookieManager);
+
+// 获取 Cookie 值
+string tokenValue = cookieManager.GetCookieValue("token");
+
+// 检查 Cookie 是否存在
+bool hasSessionCookie = cookieManager.HasCookie("sessionId");
 ```
 
 ### HTTP 请求
@@ -107,13 +134,49 @@ if (EasyJson.IsValidJson(jsonString))
 }
 ```
 
+### 实用工具功能
+
+```csharp
+using WebExtensions.src;
+
+// URL 参数排序（按 ASCII 码）
+string queryString = "b=value2&a=value1&c=value3";
+string sortedQuery = Utility.SortUrlParameters(queryString);
+// 结果: a=value1&b=value2&c=value3
+
+// 全URL参数排序
+string url = "https://example.com/api?b=2&a=1";
+string sortedUrl = Utility.SortUrlParametersInFullUrl(url);
+// 结果: https://example.com/api?a=1&b=2
+
+// 查询字符串转字典
+Dictionary<string, string> parameters = Utility.QueryStringToDictionary("name=John&age=30");
+
+// 字典转查询字符串
+string query = Utility.DictionaryToQueryString(parameters);
+
+// 生成随机码
+string randomCode = Utility.refreshCode();
+
+// 获取当前时间戳（13位）
+string timestamp = Utility.GetTimeStamp();
+
+// 解析URL中的查询参数
+Dictionary<string, string> urlParams = Utility.ParseQueryString("https://example.com/api?name=John&age=30");
+
+// 获取URL中的查询字符串部分
+string queryOnly = Utility.GetQueryString("https://example.com/api?name=John&age=30");
+// 结果: name=John&age=30
+```
+
 ## 项目结构
 
 ```
 WebExtensions/
 ├── src/
-│   ├── Http.Core.cs      # HTTP 请求和 Cookie 管理核心实现
-│   └── Json.Core.cs      # JSON 处理核心实现
+│   ├── Http.cs           # HTTP 请求和 Cookie 管理实现
+│   ├── Json.cs           # JSON 处理实现
+│   └── Utility.cs        # 实用工具类，包含URL处理、时间戳等功能
 ├── WebExtensions.csproj  # 项目配置文件
 └── README.md             # 项目文档
 ```
