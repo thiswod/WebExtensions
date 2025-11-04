@@ -1,6 +1,6 @@
 # WebExtensions
 
-WebExtensions 是一个轻量级的 .NET 工具库，提供 HTTP 请求处理、Cookie 管理、JSON 解析和实用工具功能，专为 .NET 应用程序的网络扩展和开发需求设计。
+WebExtensions 是一个轻量级的 .NET 工具库，提供 HTTP 请求处理、Cookie 管理、JSON 解析、实用工具功能和加密解密功能，专为 .NET 应用程序的网络扩展和开发需求设计。
 
 ## 主要功能
 
@@ -33,6 +33,12 @@ WebExtensions 是一个轻量级的 .NET 工具库，提供 HTTP 请求处理、
 - 随机码生成
 - 时间戳获取
 - URL 参数解析（支持多个等号的情况）
+
+### 5. 加密解密功能
+- AES-CBC 模式加密和解密
+- 支持自定义 32 字节密钥
+- 自动生成和处理 IV（初始化向量）
+- Base64 编码的加密结果
 
 ## 技术特点
 
@@ -169,6 +175,28 @@ string queryOnly = Utility.GetQueryString("https://example.com/api?name=John&age
 // 结果: name=John&age=30
 ```
 
+### 加密解密功能
+
+```csharp
+using WebExtensions.src;
+
+// 使用默认密钥加密
+string plaintext = "Hello, this is a secret message!";
+string encrypted = AesCrypt.Encrypt(plaintext);
+Console.WriteLine("加密结果: " + encrypted);
+
+// 使用默认密钥解密
+string decrypted = AesCrypt.Decrypt(encrypted);
+Console.WriteLine("解密结果: " + decrypted);
+
+// 使用自定义密钥（必须是32字节长度）
+string customKey = "01234567890123456789012345678901"; // 32字节密钥
+string encryptedWithCustomKey = AesCrypt.Encrypt(plaintext, customKey);
+string decryptedWithCustomKey = AesCrypt.Decrypt(encryptedWithCustomKey, customKey);
+
+// 注意事项：密钥必须为32字节长度，否则会抛出ArgumentException异常
+```
+
 ## 项目结构
 
 ```
@@ -176,7 +204,8 @@ WebExtensions/
 ├── src/
 │   ├── Http.cs           # HTTP 请求和 Cookie 管理实现
 │   ├── Json.cs           # JSON 处理实现
-│   └── Utility.cs        # 实用工具类，包含URL处理、时间戳等功能
+│   ├── Utility.cs        # 实用工具类，包含URL处理、时间戳等功能
+│   └── AesCrypt.cs       # AES加密解密实现
 ├── WebExtensions.csproj  # 项目配置文件
 └── README.md             # 项目文档
 ```

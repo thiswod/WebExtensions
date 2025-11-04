@@ -5,14 +5,14 @@
     <PackAsTool>False</PackAsTool>
     <!-- NuGet包元数据 -->
     <PackageId>WebExtensions</PackageId>
-    <Version>1.0.0.3</Version>
+    <Version>1.0.0.4</Version>
     <Title>WebExtensions</Title>
     <Authors>Wod</Authors>
     <Company>Wod</Company>
     <Description>轻量级.NET工具库，提供HTTP请求处理、Cookie管理和JSON解析等核心功能，专为.NET应用程序的网络扩展需求设计。</Description>
     <Summary>WebExtensions是一个易于使用的.NET Standard 2.1库，提供HTTP客户端功能、Cookie管理和JSON处理工具。</Summary>
     <PackageProjectUrl>https://www.nuget.org/packages/WebExtensions</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/wod/WebExtensions</RepositoryUrl>
+    <RepositoryUrl>https://github.com/thiswod/WebExtensions</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>web extensions http json cookie network</PackageTags>
     <Copyright>© Wod. All rights reserved.</Copyright>
